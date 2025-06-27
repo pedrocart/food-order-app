@@ -105,7 +105,7 @@ function App() {
         />
       </Modal>
       <Modal open={checkoutIsOpen} onClose={closeCheckout}>
-        <Checkout onClose={closeCheckout} />
+        <Checkout onClose={closeCheckout} cartItems={cartItems} />
       </Modal>
       <Header onType={openModal} cartItems={cartItems} />
       <main>
