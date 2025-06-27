@@ -1,4 +1,4 @@
-export default function Cart() {
+export default function Cart({ onClose, openCheckout }) {
   return (
     <>
       <div className="cart">
@@ -41,6 +41,14 @@ export default function Cart() {
             </div>
           </li>
         </ul>
+        <div className="modal-actions">
+        <button className="text-button" type="button" onClick={onClose}>
+          Close
+        </button>
+        <button className="button" type="button" onClick={openCheckout}>
+          Go To Checkout
+        </button>
+      </div>
       </div>
       
     </>

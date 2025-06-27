@@ -13,16 +13,12 @@ function Modal({ open, children, onClose }) {
   }, [open]);
 
   return createPortal(
-    <dialog className="modal" ref={dialog} onClose={onClose}>
+    <dialog
+      className="modal"
+      ref={dialog}
+      onClose={onClose}
+    >
       {open ? children : null}
-      <div className="modal-actions">
-        <button className="text-button" type="button" onClick={() => dialog.current.close()}>
-          Close
-        </button>
-        <button className="button" type="button">
-          Go To Checkout
-        </button>
-      </div>
     </dialog>,
     document.getElementById("modal")
   );

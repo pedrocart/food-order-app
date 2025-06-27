@@ -1,4 +1,4 @@
-export default function Checkout() {
+export default function Checkout({ onClose }) {
   return (
     <>
       <h2>Checkout</h2>
@@ -36,7 +36,7 @@ export default function Checkout() {
         </div>
       </form>
       <div className="modal-actions">
-        <button className="text-button" type="button">
+        <button className="text-button" type="button" onClick={onClose}>
           Close
         </button>
         <button className="button" type="button">
