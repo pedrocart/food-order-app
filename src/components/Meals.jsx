@@ -1,10 +1,9 @@
-import { useContext } from 'react';
-import { MealsContext } from '../store/meals-context';
+import { useContext } from "react";
+import { MealsContext } from "../store/meals-context";
 
-export default function Meals() {
-
+export default function Meals({ handleAddToCart }) {
   // Here you would typically use the MealsContext to fetch meals data
-  // For this example, we will just return a static meal item 
+  // For this example, we will just return a static meal item
   const { meals, isFetching, error } = useContext(MealsContext);
 
   return (
@@ -16,7 +15,10 @@ export default function Meals() {
       {meals.map((meal) => (
         <div className="meal-item" key={meal.id}>
           <article>
-            <img src={`http://localhost:3000/${meal.image}`} alt={meal.description} />
+            <img
+              src={`http://localhost:3000/${meal.image}`}
+              alt={meal.description}
+            />
             <h3>{meal.name}</h3>
             <div className="meal-item-description">
               <p>{meal.description}</p>
@@ -25,7 +27,13 @@ export default function Meals() {
               <span>${meal.price}</span>
             </div>
             <div className="meal-item-actions">
-              <button className="button" type="button">Add to Cart</button>
+              <button
+                className="button"
+                type="button"
+                onClick={() => handleAddToCart(meal.id, meal.name, meal.price)}
+              >
+                Add to Cart
+              </button>
             </div>
           </article>
         </div>
