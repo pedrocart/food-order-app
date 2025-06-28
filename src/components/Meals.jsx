@@ -1,10 +1,31 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { MealsContext } from "../store/meals-context";
 
 export default function Meals({ handleAddToCart }) {
-  // Here you would typically use the MealsContext to fetch meals data
-  // For this example, we will just return a static meal item
   const { meals, isFetching, error } = useContext(MealsContext);
+
+  // Using State to prevent multiple additions to the cart
+  // Set automatically handles uniqueness
+  const [addingItems, setAddingItems] = useState(new Set());
+
+  // Function to handle adding items to the cart with Debounce
+  const handleAddToCartWithDebounce = async (mealId, mealName, mealPrice) => {
+    if (addingItems.has(mealId)) {
+      return; // Prevent adding the same item multiple times
+    }
+
+    setAddingItems( prev => new Set([...prev, mealId]));
+    handleAddToCart(mealId, mealName, mealPrice);
+
+    // Reset after a short delay
+    setTimeout(() => {
+      setAddingItems(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(mealId);
+        return newSet;
+      });
+    }, 200);
+  };
 
   return (
     <div id="meals">
@@ -30,9 +51,10 @@ export default function Meals({ handleAddToCart }) {
               <button
                 className="button"
                 type="button"
-                onClick={() => handleAddToCart(meal.id, meal.name, meal.price)}
+                disabled={addingItems.has(meal.id)}
+                onClick={() => handleAddToCartWithDebounce(meal.id, meal.name, meal.price)}
               >
-                Add to Cart
+                {addingItems.has(meal.id) ? "Adding..." : "Add to Cart"}
               </button>
             </div>
           </article>
