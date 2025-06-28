@@ -5,6 +5,7 @@ export const MealsContext = createContext({
   isFetching: false,
   error: null,
   setMeals: () => {},
+  submitOrder: () => {},
 });
 
 export function MealsContextProvider({ children }) {
@@ -32,6 +33,24 @@ export function MealsContextProvider({ children }) {
 
     fetchMeals();
   }, []);
+
+  async function submitOrder(checkoutData) {
+    const response = await fetch("http://localhost:3000/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(checkoutData),
+    });
+
+    if (!response.ok) {
+      return;
+    }
+
+    const savedOrder = await response.json();
+    console.log("Order saved successfully:", savedOrder);
+
+  }
 
   return (
     <MealsContext.Provider value={{ meals, isFetching, error, setMeals }}>

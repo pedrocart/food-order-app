@@ -1,8 +1,12 @@
-import { useActionState, use } from "react";
+import { useActionState, useContext } from "react";
+import { MealsContext } from "../store/meals-context";
 
 import Submit from "./Submit";
 
 export default function Checkout({ onClose, cartItems }) {
+
+  const { submitOrder } = useContext(MealsContext);
+
   const [formState, formAction] = useActionState(submitAction, {
     errors: null,
   });
@@ -60,6 +64,23 @@ export default function Checkout({ onClose, cartItems }) {
     }
     console.log("Cart Items: ", cartItems)
 
+    // Submit the Form if no errors
+    const cartItemsWithDetails = cartItems.map((item) => ({
+      id: item.id,
+      name: item.name,
+      quantity: item.quantity,
+      price: item.price,
+    }));
+    const checkoutData = {
+      fullname,
+      email,
+      address,
+      postal,
+      city,
+      cartItems: cartItemsWithDetails,
+    };
+    await submitOrder(checkoutData); // To only clear the form after successful submission
+  
     // Reset the form State
     return { errors: null, enteredValues: null };
   }
